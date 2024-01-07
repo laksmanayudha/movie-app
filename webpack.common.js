@@ -60,6 +60,15 @@ module.exports = {
           },
         ],
       },
+      // SVG
+      {
+        mimetype: 'image/svg+xml',
+        scheme: 'data',
+        type: 'asset/resource',
+        generator: {
+          filename: 'icons/[hash].svg',
+        },
+      },
     ],
   },
   // plugins

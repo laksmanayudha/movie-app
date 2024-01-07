@@ -1,10 +1,10 @@
 @font-face {
-  font-family: 'Montserrat';
-  src: url('../fonts/Montserrat-Regular.ttf');
+  font-family: 'Poppins';
+  src: url('../fonts/Poppins-Regular.ttf');
 }
 
 * {
-  font-family: 'Montserrat';
+  font-family: 'Poppins';
 }
 
 .swiper {
@@ -20,13 +20,22 @@
   align-items: center;
 }
 
-.swiper-slide img {
+.movie-list__item {
+  max-width: 200px;
+  height: 270px;
+}
+
+.movie-list__item img {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
 }
 
-.movie-list__item {
-  height: 250px;
+.avatar-img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  object-position: center;
 }
