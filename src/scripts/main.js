@@ -1,5 +1,10 @@
 import Swiper from 'swiper/bundle';
 import 'swiper/css/bundle';
+import './components/Navbar/app-navbar';
+import './components/Navbar/app-navbar-item';
+import './components/Carousel/app-carousel';
+import './components/Footer/app-footer';
+import './components/Footer/app-footer-item';
 
 const main = () => {
   const swiper = new Swiper('.mySwiper', {
