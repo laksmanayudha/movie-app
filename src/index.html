@@ -24,104 +24,42 @@
     <!-- TRENDING SECTION -->
     <section class="trending-section mt-4">
       <h4>Movie List</h4>
-      <ul class="nav nav-underline">
-        <li class="nav-item">
-          <a class="nav-link active" href="#">Now Playing</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Popular</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Top Rated</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Upcoming</a>
-        </li>
-      </ul>
+      <app-tab>
+        <app-tab-item title="Now Playing" active></app-tab-item>
+        <app-tab-item title="Popular"></app-tab-item>
+        <app-tab-item title="Top Rated"></app-tab-item>
+        <app-tab-item title="Upcoming"></app-tab-item>
+      </app-tab>
       <div class="container-fluid mt-3">
-        <div class="swiper mySwiper">
-          <div class="swiper-wrapper">
-            <div class="swiper-slide">
-              <div class="card movie-list__item">
-                <img src="https://dummyimage.com/600x400/947894/fff" class="card-img" alt="movie list">
-                <div class="card-img-overlay">
-                  <div class="h-100 d-flex flex-column justify-content-end">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Card Description</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="card movie-list__item">
-                <img src="https://dummyimage.com/600x400/947894/fff" class="card-img" alt="movie list">
-                <div class="card-img-overlay">
-                  <div class="h-100 d-flex flex-column justify-content-end">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Card Description</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="card movie-list__item">
-                <img src="https://dummyimage.com/600x400/947894/fff" class="card-img" alt="movie list">
-                <div class="card-img-overlay">
-                  <div class="h-100 d-flex flex-column justify-content-end">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Card Description</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="card movie-list__item">
-                <img src="https://dummyimage.com/600x400/947894/fff" class="card-img" alt="movie list">
-                <div class="card-img-overlay">
-                  <div class="h-100 d-flex flex-column justify-content-end">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Card Description</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="card movie-list__item">
-                <img src="https://dummyimage.com/600x400/947894/fff" class="card-img" alt="movie list">
-                <div class="card-img-overlay">
-                  <div class="h-100 d-flex flex-column justify-content-end">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Card Description</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="card movie-list__item">
-                <img src="https://dummyimage.com/600x400/947894/fff" class="card-img" alt="movie list">
-                <div class="card-img-overlay">
-                  <div class="h-100 d-flex flex-column justify-content-end">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Card Description</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="card movie-list__item">
-                <img src="https://dummyimage.com/600x400/947894/fff" class="card-img" alt="movie list">
-                <div class="card-img-overlay">
-                  <div class="h-100 d-flex flex-column justify-content-end">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Card Description</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="swiper-button-next"></div>
-          <div class="swiper-button-prev"></div>
-        </div>
+        <swiper-container>
+          <swiper-slide>
+            <movie-card image="https://dummyimage.com/600x400/947894/fff" title="Iron Man" description="Iron Man (2024) The Lost City"></movie-card>
+          </swiper-slide>
+          <swiper-slide>
+            <movie-card image="https://dummyimage.com/600x400/947894/fff" title="Iron Man" description="Iron Man (2024) The Lost City"></movie-card>
+          </swiper-slide>
+          <swiper-slide>
+            <movie-card image="https://dummyimage.com/600x400/947894/fff" title="Iron Man" description="Iron Man (2024) The Lost City"></movie-card>
+          </swiper-slide>
+          <swiper-slide>
+            <movie-card image="https://dummyimage.com/600x400/947894/fff" title="Iron Man" description="Iron Man (2024) The Lost City"></movie-card>
+          </swiper-slide>
+          <swiper-slide>
+            <movie-card image="https://dummyimage.com/600x400/947894/fff" title="Iron Man" description="Iron Man (2024) The Lost City"></movie-card>
+          </swiper-slide>
+          <swiper-slide>
+            <movie-card image="https://dummyimage.com/600x400/947894/fff" title="Iron Man" description="Iron Man (2024) The Lost City"></movie-card>
+          </swiper-slide>
+          <swiper-slide>
+            <movie-card image="https://dummyimage.com/600x400/947894/fff" title="Iron Man" description="Iron Man (2024) The Lost City"></movie-card>
+          </swiper-slide>
+          <swiper-slide>
+            <movie-card image="https://dummyimage.com/600x400/947894/fff" title="Iron Man" description="Iron Man (2024) The Lost City"></movie-card>
+          </swiper-slide>
+          <swiper-slide>
+            <movie-card image="https://dummyimage.com/600x400/947894/fff" title="Iron Man" description="Iron Man (2024) The Lost City"></movie-card>
+          </swiper-slide>
+        </swiper-container>
       </div>
     </section>
 
@@ -179,8 +117,8 @@
           </div>
         </div>
         <div class="col-md-8 col-lg-9 mt-3">
+          <p class="mb-0">Search Result For "<strong>iron man</strong>"</p>
           <div class="container-fluid">
-            <p class="mb-0">Search Result For "<strong>kdfsfsd</strong>"</p>
             <div class="row">
               <div class="col-sm-6 col-lg-3 mt-4 d-flex justify-content-center" data-bs-toggle="modal" data-bs-target="#movieDetailModal">
                 <div class="card movie-list__item">

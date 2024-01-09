@@ -5,36 +5,11 @@ import './components/Navbar/app-navbar-item';
 import './components/Carousel/app-carousel';
 import './components/Footer/app-footer';
 import './components/Footer/app-footer-item';
+import './components/Tab/app-tab';
+import './components/Tab/app-tab-item';
+import './components/Card/swiper-container';
 
 const main = () => {
-  const swiper = new Swiper('.mySwiper', {
-    slidesPerView: 1,
-    spaceBetween: 30,
-    freeMode: true,
-    navigation: {
-      nextEl: '.swiper-button-next',
-      prevEl: '.swiper-button-prev',
-    },
-    breakpoints: {
-      576: {
-        slidesPerView: 2,
-        spaceBetween: 10,
-      },
-      768: {
-        slidesPerView: 4,
-        spaceBetween: 20,
-      },
-      992: {
-        slidesPerView: 5,
-        spaceBetween: 30,
-      },
-      1200: {
-        slidesPerView: 6,
-        spaceBetween: 30,
-      },
-    },
-  });
-
   const swiperTwo = new Swiper('.mySwiperTwo', {
     slidesPerView: 1,
     spaceBetween: 30,
