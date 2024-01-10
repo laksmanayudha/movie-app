@@ -1,26 +1,41 @@
+import './app-carousel-item';
+
 class AppCarousel extends HTMLElement {
   constructor() {
     super();
-    this.childrenHTML = this.innerHTML;
-    this.activeIndex = this.getAttribute('activeIndex') || 1;
     this.slides = [];
   }
 
   connectedCallback() {
     this.render();
-    this.childrenHTML = null;
+  }
+
+  set slides(slides) {
+    this._slides = slides;
+    this.render();
   }
 
   render() {
+    const indicators = this._slides.map((slide, index) => `
+      <button
+        type="button"
+        data-bs-target="#heroCarousel"
+        data-bs-slide-to="${index}"
+        class="${slide.active ? 'active' : ''}"
+      ></button>
+    `).join('');
+    const carouselSlides = this._slides.map((slide) => {
+      const carouselItem = document.createElement('app-carousel-item');
+      carouselItem.slide = slide;
+      return carouselItem.innerHTML;
+    }).join('');
     this.innerHTML = `
       <div id="heroCarousel" class="carousel slide">
         <div class="carousel-indicators">
-          <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
-          <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
-          <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
+          ${indicators}
         </div>
         <div class="carousel-inner">
-          ${this.childrenHTML}
+          ${carouselSlides}
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
           <span class="carousel-control-prev-icon"></span>

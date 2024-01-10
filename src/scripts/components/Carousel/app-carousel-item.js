@@ -2,11 +2,6 @@ class AppCarouselItem extends HTMLElement {
   constructor() {
     super();
     this.childrenHTML = this.innerHTML;
-    this.active = this.hasAttribute('active');
-    this.image = this.getAttribute('image') || null;
-    this.align = this.getAttribute('align') || 'left';
-    this.label = this.getAttribute('label') || null;
-    this.description = this.getAttribute('description') || null;
     this.alignType = {
       left: 'text-start',
       center: 'text-center',
@@ -18,13 +13,26 @@ class AppCarouselItem extends HTMLElement {
     this.render();
   }
 
+  set slide(slide) {
+    this._slide = slide;
+    this.render();
+  }
+
   render() {
+    const {
+        active,
+        image,
+        description,
+        align,
+        label,
+    } = this._slide;
+
     this.innerHTML = `
-      <div class="carousel-item ${this.active ? 'active' : ''}">
-        <img src="${this.image}" class="d-block w-100" alt="Carousel Image">
-        <div class="carousel-caption d-none d-md-block ${this.alignType[this.align]}">
-          <h2>${this.label}</h2>
-          <p>${this.description}</p>
+      <div class="carousel-item ${active ? 'active' : ''}">
+        <img src="${image}" class="d-block w-100" alt="Carousel Image">
+        <div class="carousel-caption d-none d-md-block ${this.alignType[align]}">
+          <h2>${label}</h2>
+          <p>${description}</p>
         </div>
       </div>
     `;

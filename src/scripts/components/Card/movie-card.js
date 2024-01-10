@@ -25,6 +25,7 @@ class MovieCard extends HTMLElement {
 
   set movie(movie) {
     this._movie = movie;
+    this.render();
   }
 
   render() {
