@@ -1,3 +1,4 @@
+import 'regenerator-runtime';
 import './assets/css/style.css';
 import './assets/scss/style.scss';
 import $ from 'jquery';

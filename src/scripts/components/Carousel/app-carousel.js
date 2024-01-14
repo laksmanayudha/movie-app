@@ -24,18 +24,12 @@ class AppCarousel extends HTMLElement {
         class="${slide.active ? 'active' : ''}"
       ></button>
     `).join('');
-    const carouselSlides = this._slides.map((slide) => {
-      const carouselItem = document.createElement('app-carousel-item');
-      carouselItem.slide = slide;
-      return carouselItem.innerHTML;
-    }).join('');
     this.innerHTML = `
-      <div id="heroCarousel" class="carousel slide">
+      <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators">
           ${indicators}
         </div>
-        <div class="carousel-inner">
-          ${carouselSlides}
+        <div class="carousel-inner" id="carouselInner">
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
           <span class="carousel-control-prev-icon"></span>
@@ -47,6 +41,13 @@ class AppCarousel extends HTMLElement {
         </button>
       </div>
     `;
+
+    const carouselInner = document.getElementById('carouselInner');
+    this._slides.forEach((slide) => {
+      const carouselItem = document.createElement('app-carousel-item');
+      carouselItem.slide = slide;
+      carouselInner.appendChild(carouselItem);
+    });
   }
 }
 

@@ -6,20 +6,21 @@ import './movie-card';
 class SwiperCardContainer extends HTMLElement {
   constructor() {
     super();
-    this.childrenHTML = this.innerHTML;
-    this.movies = [];
-    this.swiper = null;
     this.withNavigation = this.hasAttribute('withNavigation');
   }
 
-  connectedCallback() {
+  set movies(movies) {
+    this._movies = movies;
     this.render();
-    this.childrenHTML = null;
+  }
+
+  set breakPoints(breakpoints) {
+    this._breakPoints = breakpoints;
   }
 
   render() {
     // generate content
-    const content = this.movies.map((movie) => {
+    const content = this._movies.map((movie) => {
       const swiperSlide = document.createElement('swiper-slide');
       const movieCard = document.createElement('movie-card');
       movieCard.movie = movie;
@@ -31,7 +32,7 @@ class SwiperCardContainer extends HTMLElement {
     this.innerHTML = `
       <div class="swiper">
         <div class="swiper-wrapper">
-          ${this.childrenHTML || content}
+          ${content}
         </div>
         ${this.withNavigation
           ? `
@@ -46,30 +47,12 @@ class SwiperCardContainer extends HTMLElement {
     const swiperContainer = this.querySelector('.swiper');
     this.swiper = new Swiper(swiperContainer, {
       slidesPerView: 1,
-      spaceBetween: 30,
       freeMode: true,
       navigation: {
         nextEl: '.swiper-button-next',
         prevEl: '.swiper-button-prev',
       },
-      breakpoints: {
-        576: {
-          slidesPerView: 2,
-          spaceBetween: 10,
-        },
-        768: {
-          slidesPerView: 4,
-          spaceBetween: 20,
-        },
-        992: {
-          slidesPerView: 5,
-          spaceBetween: 30,
-        },
-        1200: {
-          slidesPerView: 6,
-          spaceBetween: 30,
-        },
-      },
+      breakpoints: this._breakPoints,
     });
   }
 }
