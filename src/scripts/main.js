@@ -1,3 +1,5 @@
+import DataStore from './data/data-store';
+import { trimPath } from './helpers/helper';
 import './components/Navbar/app-navbar';
 import './components/Navbar/app-navbar-item';
 import './components/Carousel/app-carousel';
@@ -11,78 +13,19 @@ import './components/Form/load-more-button';
 import './components/Form/movie-filter';
 import './components/Modal/movie-detail-modal';
 
-const main = () => {
-  const movies = [
-    {
-      title: 'Iron man',
-      image: 'https://dummyimage.com/600x400/947894/fff',
-      description: 'Some Heroes',
-    },
-    {
-      title: 'Iron man',
-      image: 'https://dummyimage.com/600x400/947894/fff',
-      description: 'Some Heroes',
-    },
-    {
-      title: 'Iron man',
-      image: 'https://dummyimage.com/600x400/947894/fff',
-      description: 'Some Heroes',
-    },
-    {
-      title: 'Iron man',
-      image: 'https://dummyimage.com/600x400/947894/fff',
-      description: 'Some Heroes',
-    },
-    {
-      title: 'Iron man',
-      image: 'https://dummyimage.com/600x400/947894/fff',
-      description: 'Some Heroes',
-    },
-    {
-      title: 'Iron man',
-      image: 'https://dummyimage.com/600x400/947894/fff',
-      description: 'Some Heroes',
-    },
-    {
-      title: 'Iron man',
-      image: 'https://dummyimage.com/600x400/947894/fff',
-      description: 'Some Heroes',
-    },
-    {
-      title: 'Iron man',
-      image: 'https://dummyimage.com/600x400/947894/fff',
-      description: 'Some Heroes',
-    },
-    {
-      title: 'Iron man',
-      image: 'https://dummyimage.com/600x400/947894/fff',
-      description: 'Some Heroes',
-    },
-  ];
-  const slides = [
-    {
-      active: true,
-      image: 'https://dummyimage.com/600x400/947894/fff',
-      align: 'left',
-      label: 'Lorem ipsum dolor sit amet',
-      description: 'Lorem ipsum dolr sit amet lorem ipusm lorem ipsum',
-    },
-    {
-      active: false,
-      image: 'https://dummyimage.com/600x400/947894/fff',
-      align: 'center',
-      label: 'Lorem ipsum dolor sit amet',
-      description: 'Lorem ipsum dolr sit amet lorem ipusm lorem ipsum',
-    },
-    {
-      active: false,
-      image: 'https://dummyimage.com/600x400/947894/fff',
-      align: 'right',
-      label: 'Lorem ipsum dolor sit amet',
-      description: 'Lorem ipsum dolr sit amet lorem ipusm lorem ipsum',
-    },
-  ];
-
+const main = async () => {
+  const slides = DataStore.getCarouselData();
+  const [
+    configuration,
+    genres,
+    nowPlaying,
+  ] = await DataStore.pool([
+    DataStore.getConfiguration(),
+    DataStore.getGenres(),
+    DataStore.getNowPlaying(1),
+  ]);
+  const baseImageUrl = trimPath(configuration.images.secure_base_url);
+  const posterImageSize = configuration.images.poster_sizes[4] || 'w500';
   const carousel = document.querySelector('app-carousel');
   const swiperContainer = document.querySelector('swiper-container');
   const gridContainer = document.querySelector('grid-container');
@@ -106,8 +49,12 @@ const main = () => {
       spaceBetween: 30,
     },
   };
-  swiperContainer.movies = movies;
-  gridContainer.movies = movies;
+
+  swiperContainer.movies = nowPlaying.map((movie) => ({
+    title: movie.title,
+    description: movie.release_date,
+    image: `${baseImageUrl}/${posterImageSize}/${trimPath(movie.poster_path)}`,
+  }));
 };
 
 export default main;

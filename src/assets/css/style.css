@@ -38,3 +38,13 @@
   object-fit: cover;
   object-position: center;
 }
+
+.carousel-item__backdrop {
+  background: rgb(0,0,0);
+  background: linear-gradient(0deg, rgb(30, 30, 30) 0%, rgba(30, 30, 30, 0.5) 40%, rgba(255,255,255,0) 100%);
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}

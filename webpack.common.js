@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 const autoprefixer = require('autoprefixer');
 
 module.exports = {
@@ -86,5 +87,7 @@ module.exports = {
         { from: './src/assets/img', to: path.resolve(__dirname, 'dist', 'assets', 'img') },
       ],
     }),
+    // ENV
+    new Dotenv(),
   ],
 };

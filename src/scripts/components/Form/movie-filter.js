@@ -13,7 +13,7 @@ class MovieFilter extends HTMLElement {
     <div class="accordion" id="filterAccordion">
       <div class="accordion-item">
         <h2 class="accordion-header">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#filterOne" aria-expanded="true" aria-controls="filterOne">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#filterOne" aria-controls="filterOne">
             <span>by Title or Name</span>
           </button>
         </h2>
@@ -28,11 +28,11 @@ class MovieFilter extends HTMLElement {
       </div>
       <div class="accordion-item">
         <h2 class="accordion-header">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#filterTwo" aria-expanded="true" aria-controls="filterTwo">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#filterTwo" aria-controls="filterTwo">
             <span>by Categories</span>
           </button>
         </h2>
-        <div id="filterTwo" class="accordion-collapse collapse show" data-bs-parent="#filterAccordion">
+        <div id="filterTwo" class="accordion-collapse collapse" data-bs-parent="#filterAccordion">
           <div class="accordion-body">
             <div class="d-flex flex-wrap gap-2">
               <a href="#" class="border px-2 py-1 rounded text-decoration-none text-bg-primary">Action</a>

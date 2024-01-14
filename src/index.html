@@ -12,7 +12,6 @@
     <app-navbar brand="ExploreMovies" image="/assets/img/logo.png">
       <app-navbar-item title="Movie List"></app-navbar-item>
       <app-navbar-item title="Search"></app-navbar-item>
-      <app-navbar-item title="Movie Providers"></app-navbar-item>
     </app-navbar>
   </header>
   <main class="container">
@@ -25,10 +24,10 @@
     <section class="trending-section mt-4">
       <h4>Movie List</h4>
       <app-tab>
-        <app-tab-item title="Now Playing" active></app-tab-item>
-        <app-tab-item title="Popular"></app-tab-item>
-        <app-tab-item title="Top Rated"></app-tab-item>
-        <app-tab-item title="Upcoming"></app-tab-item>
+        <app-tab-item title="Now Playing" active id="nowPlayingTab"></app-tab-item>
+        <app-tab-item title="Popular" id="popularTab"></app-tab-item>
+        <app-tab-item title="Top Rated" id="topRatedTab"></app-tab-item>
+        <app-tab-item title="Upcoming" id="upcomingTab"></app-tab-item>
       </app-tab>
       <div class="container-fluid mt-3">
         <swiper-container withNavigation></swiper-container>
