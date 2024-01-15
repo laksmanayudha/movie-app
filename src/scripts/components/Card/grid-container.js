@@ -8,7 +8,18 @@ class GridContainer extends HTMLElement {
 
   render() {
     // ganti content
-    const movieCards = this._movies.map((movie) => {
+    const movies = this._movies || [];
+
+    if (!movies.length) {
+      this.innerHTML = `
+      <div class="container-fluid">
+        <div class="p-2 text-muted">No data available</div>
+      </div>
+      `;
+      return;
+    }
+
+    const movieCards = movies.map((movie) => {
       const card = document.createElement('movie-card');
       card.movie = movie;
       return `

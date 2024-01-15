@@ -10,8 +10,8 @@
   <header class="sticky-top">
     <!-- NAVBAR -->
     <app-navbar brand="ExploreMovies" image="/assets/img/logo.png">
-      <app-navbar-item title="Movie List"></app-navbar-item>
-      <app-navbar-item title="Search"></app-navbar-item>
+      <app-navbar-item title="Movie List" target="#trendingSection"></app-navbar-item>
+      <app-navbar-item title="Search" target="#searchSection"></app-navbar-item>
     </app-navbar>
   </header>
   <main class="container">
@@ -21,13 +21,13 @@
     </section>
 
     <!-- TRENDING SECTION -->
-    <section class="trending-section mt-4">
+    <section class="trending-section mt-4" id="trendingSection">
       <h4>Movie List</h4>
       <app-tab>
-        <app-tab-item title="Now Playing" active id="nowPlayingTab"></app-tab-item>
-        <app-tab-item title="Popular" id="popularTab"></app-tab-item>
-        <app-tab-item title="Top Rated" id="topRatedTab"></app-tab-item>
-        <app-tab-item title="Upcoming" id="upcomingTab"></app-tab-item>
+        <app-tab-item title="Now Playing" active data-type="now-playing"></app-tab-item>
+        <app-tab-item title="Popular" data-type="popular"></app-tab-item>
+        <app-tab-item title="Top Rated" data-type="top-rated"></app-tab-item>
+        <app-tab-item title="Upcoming" data-type="upcoming"></app-tab-item>
       </app-tab>
       <div class="container-fluid mt-3">
         <swiper-container withNavigation></swiper-container>
@@ -35,7 +35,7 @@
     </section>
 
     <!-- SEARCH MOVIES SECTION -->
-    <section class="search-section mt-4">
+    <section class="search-section mt-4" id="searchSection">
       <h4>Search Movies</h4>
       <div class="row">
         <div class="col-md-4 col-lg-3 mt-3">
@@ -57,9 +57,9 @@
   </main>
   <app-footer copyRightYear="2024" companyName="Laksmana Yudha, Inc">
     <app-footer-item title="Home"></app-footer-item>
-    <app-footer-item title="Movie"></app-footer-item>
-    <app-footer-item title="Search"></app-footer-item>
-    <app-footer-item title="About Me"></app-footer-item>
+    <app-footer-item title="Movie" target="#trendingSection"></app-footer-item>
+    <app-footer-item title="Search" target="#searchSection"></app-footer-item>
+    <app-footer-item title="About Me" target="https://github.com/laksmanayudha"></app-footer-item>
   </app-footer>
 </body>
 </html>

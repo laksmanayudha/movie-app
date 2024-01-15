@@ -1,5 +1,6 @@
+import $ from 'jquery';
 import DataStore from './data/data-store';
-import { trimPath } from './helpers/helper';
+import { trimPath, fader, formatDate } from './helpers/helper';
 import './components/Navbar/app-navbar';
 import './components/Navbar/app-navbar-item';
 import './components/Carousel/app-carousel';
@@ -13,17 +14,44 @@ import './components/Form/load-more-button';
 import './components/Form/movie-filter';
 import './components/Modal/movie-detail-modal';
 
+const getTrendingMovies = async (type) => {
+  if (type === 'now-playing') {
+    const movies = await DataStore.getNowPlaying(1);
+    return movies;
+  }
+
+  if (type === 'popular') {
+    const movies = await DataStore.getPopular(1);
+    return movies;
+  }
+
+  if (type === 'top-rated') {
+    const movies = await DataStore.getTopRated(1);
+    return movies;
+  }
+
+  if (type === 'upcoming') {
+    const movies = await DataStore.getUpcoming(1);
+    return movies;
+  }
+
+  return [];
+};
+
 const main = async () => {
   const slides = DataStore.getCarouselData();
   const [
     configuration,
     genres,
     nowPlaying,
+    tmdbTrending,
   ] = await DataStore.pool([
     DataStore.getConfiguration(),
     DataStore.getGenres(),
     DataStore.getNowPlaying(1),
+    DataStore.getTMDBTrending(),
   ]);
+
   const baseImageUrl = trimPath(configuration.images.secure_base_url);
   const posterImageSize = configuration.images.poster_sizes[4] || 'w500';
   const carousel = document.querySelector('app-carousel');
@@ -52,9 +80,38 @@ const main = async () => {
 
   swiperContainer.movies = nowPlaying.map((movie) => ({
     title: movie.title,
-    description: movie.release_date,
+    description: formatDate(movie.release_date),
     image: `${baseImageUrl}/${posterImageSize}/${trimPath(movie.poster_path)}`,
   }));
+
+  gridContainer.movies = tmdbTrending.map((movie) => ({
+    title: movie.title,
+    description: formatDate(movie.release_date),
+    image: `${baseImageUrl}/${posterImageSize}/${trimPath(movie.poster_path)}`,
+  }));
+
+  // trending tab
+  $('#trendingSection app-tab-item').on('click', async function (e) {
+    e.preventDefault();
+
+    // set active tab
+    $('#trendingSection app-tab-item').removeAttr('active');
+    $(this).attr('active', true);
+    const { fadeIn, fadeOut } = fader($('#trendingSection swiper-container'));
+    const trendingType = $(this).data('type');
+
+    // get data trending
+    fadeOut();
+    const movies = await getTrendingMovies(trendingType);
+
+    // set to container
+    swiperContainer.movies = movies.map((movie) => ({
+      title: movie.title,
+      description: formatDate(movie.release_date),
+      image: `${baseImageUrl}/${posterImageSize}/${trimPath(movie.poster_path)}`,
+    }));
+    fadeIn();
+  });
 };
 
 export default main;

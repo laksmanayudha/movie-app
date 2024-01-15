@@ -9,9 +9,9 @@ class MovieCard extends HTMLElement {
     this.innerHTML = `
       <div class="card movie-item">
         <img src="${image}" class="card-img img-fit" alt="movie image">
-        <div class="card-img-overlay">
+        <div class="card-img-overlay backdrop text-white">
           <div class="h-100 d-flex flex-column justify-content-end">
-            <h5 class="card-title">${title}</h5>
+            <h5 class="card-title text-ellipsis">${title}</h5>
             <p class="card-text">${description}</p>
           </div>
         </div>

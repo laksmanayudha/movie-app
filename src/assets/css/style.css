@@ -39,7 +39,7 @@
   object-position: center;
 }
 
-.carousel-item__backdrop {
+.backdrop {
   background: rgb(0,0,0);
   background: linear-gradient(0deg, rgb(30, 30, 30) 0%, rgba(30, 30, 30, 0.5) 40%, rgba(255,255,255,0) 100%);
   position: absolute;
@@ -47,4 +47,12 @@
   right: 0;
   bottom: 0;
   left: 0;
+}
+
+.text-ellipsis {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

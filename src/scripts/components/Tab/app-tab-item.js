@@ -1,18 +1,27 @@
 class AppTabItem extends HTMLElement {
   constructor() {
     super();
-    this.title = this.getAttribute('title') || null;
-    this.active = this.hasAttribute('active');
+    this._title = this.getAttribute('title') || null;
+    this._active = this.hasAttribute('active');
   }
 
   connectedCallback() {
     this.render();
   }
 
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (name === 'active') this._active = this.hasAttribute('active');
+    this.render();
+  }
+
+  static get observedAttributes() {
+    return ['active'];
+  }
+
   render() {
     this.innerHTML = `
       <li class="nav-item">
-        <a class="nav-link ${this.active ? 'active' : ''}" href="#">${this.title}</a>
+        <a class="nav-link ${this._active ? 'active' : ''}" href="#">${this._title}</a>
       </li>
     `;
   }

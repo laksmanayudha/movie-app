@@ -25,7 +25,7 @@ class AppCarouselItem extends HTMLElement {
 
     this.innerHTML = `
       <div class="carousel-item ${active ? 'active' : ''}" style="height: 450px;">
-        <div class="carousel-item__backdrop"></div>
+        <div class="backdrop"></div>
         <img src="${image}" class="d-block w-100 img-fit" alt="Carousel Image">
         <div class="carousel-caption d-none d-md-block ${this.alignType[align]}">
           <h2>${label}</h2>

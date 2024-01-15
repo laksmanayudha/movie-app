@@ -93,6 +93,49 @@ class DataStore {
       return null;
     }
   }
+
+  static async getPopular(page = 1) {
+    try {
+      const baseUrl = process.env.TMDB_BASE_URL;
+      const params = DataStore.generateQueryParams({ page });
+      const response = await DataStore.fetchData(`${baseUrl}/movie/popular?${params}`);
+      return response.results;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  static async getTopRated(page = 1) {
+    try {
+      const baseUrl = process.env.TMDB_BASE_URL;
+      const params = DataStore.generateQueryParams({ page });
+      const response = await DataStore.fetchData(`${baseUrl}/movie/top_rated?${params}`);
+      return response.results;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  static async getUpcoming(page = 1) {
+    try {
+      const baseUrl = process.env.TMDB_BASE_URL;
+      const params = DataStore.generateQueryParams({ page });
+      const response = await DataStore.fetchData(`${baseUrl}/movie/upcoming?${params}`);
+      return response.results;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  static async getTMDBTrending(timeWindow = 'day') {
+    try {
+      const baseUrl = process.env.TMDB_BASE_URL;
+      const response = await DataStore.fetchData(`${baseUrl}/trending/movie/${timeWindow}`);
+      return response.results;
+    } catch (error) {
+      return null;
+    }
+  }
 }
 
 export default DataStore;
