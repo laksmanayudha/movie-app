@@ -41,7 +41,6 @@ class DataStore {
       const responseJson = await response.json();
       return responseJson;
     } catch (error) {
-      console.log(error);
       return null;
     }
   }
@@ -67,9 +66,10 @@ class DataStore {
     try {
       const baseUrl = process.env.TMDB_BASE_URL;
       const response = await DataStore.fetchData(`${baseUrl}/configuration`);
+      if (!response) throw new Error('Fail to get configuration data');
       return response;
     } catch (error) {
-      return null;
+      return {};
     }
   }
 
@@ -77,9 +77,10 @@ class DataStore {
     try {
       const baseUrl = process.env.TMDB_BASE_URL;
       const response = await DataStore.fetchData(`${baseUrl}/genre/movie/list`);
+      if (!response) throw new Error('Fail to get genres data');
       return response.genres;
     } catch (error) {
-      return null;
+      return [];
     }
   }
 
@@ -88,9 +89,10 @@ class DataStore {
       const baseUrl = process.env.TMDB_BASE_URL;
       const params = DataStore.generateQueryParams({ page });
       const response = await DataStore.fetchData(`${baseUrl}/movie/now_playing?${params}`);
+      if (!response) throw new Error('Fail to get now playing movies data');
       return response.results;
     } catch (error) {
-      return null;
+      return [];
     }
   }
 
@@ -99,9 +101,10 @@ class DataStore {
       const baseUrl = process.env.TMDB_BASE_URL;
       const params = DataStore.generateQueryParams({ page });
       const response = await DataStore.fetchData(`${baseUrl}/movie/popular?${params}`);
+      if (!response) throw new Error('Fail to get popular movies data');
       return response.results;
     } catch (error) {
-      return null;
+      return [];
     }
   }
 
@@ -110,9 +113,10 @@ class DataStore {
       const baseUrl = process.env.TMDB_BASE_URL;
       const params = DataStore.generateQueryParams({ page });
       const response = await DataStore.fetchData(`${baseUrl}/movie/top_rated?${params}`);
+      if (!response) throw new Error('Fail to get top rated movies data');
       return response.results;
     } catch (error) {
-      return null;
+      return [];
     }
   }
 
@@ -121,9 +125,10 @@ class DataStore {
       const baseUrl = process.env.TMDB_BASE_URL;
       const params = DataStore.generateQueryParams({ page });
       const response = await DataStore.fetchData(`${baseUrl}/movie/upcoming?${params}`);
+      if (!response) throw new Error('Fail to get upcoming movies data');
       return response.results;
     } catch (error) {
-      return null;
+      return [];
     }
   }
 
@@ -131,9 +136,22 @@ class DataStore {
     try {
       const baseUrl = process.env.TMDB_BASE_URL;
       const response = await DataStore.fetchData(`${baseUrl}/trending/movie/${timeWindow}`);
+      if (!response) throw new Error('Fail to get TMDB trending data');
       return response.results;
     } catch (error) {
-      return null;
+      return [];
+    }
+  }
+
+  static async getSearchMovies(keyword = '', page = 1) {
+    try {
+      const baseUrl = process.env.TMDB_BASE_URL;
+      const params = DataStore.generateQueryParams({ query: keyword, page });
+      const response = await DataStore.fetchData(`${baseUrl}/search/movie?${params}`);
+      if (!response) throw new Error('Fail to get search movies data');
+      return response.results;
+    } catch (error) {
+      return [];
     }
   }
 }

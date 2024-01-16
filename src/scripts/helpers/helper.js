@@ -7,5 +7,21 @@ const fader = (element) => ({
   fadeOut: () => $(element).fadeOut('slow'),
 });
 const formatDate = (date, format = 'd MMM YYYY') => moment(date).format(format);
+const loader = (element, message = 'Loading...') => {
+  const defaultContent = $(element).html();
+  return {
+    startLoading: () => {
+      $(element).html(message).prop('disabled', true);
+    },
+    stopLoading: () => {
+      $(element).html(defaultContent).prop('disabled', false);
+    },
+  };
+};
 
-export { trimPath, fader, formatDate };
+export {
+  trimPath,
+  fader,
+  formatDate,
+  loader,
+};

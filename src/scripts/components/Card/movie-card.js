@@ -6,6 +6,7 @@ class MovieCard extends HTMLElement {
 
   render() {
     const { image, title, description } = this._movie;
+    this.style.width = '100%';
     this.innerHTML = `
       <div class="card movie-item">
         <img src="${image}" class="card-img img-fit" alt="movie image">

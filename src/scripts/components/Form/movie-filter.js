@@ -1,63 +1,52 @@
+import { loader } from '../../helpers/helper';
+
 class MovieFilter extends HTMLElement {
   connectedCallback() {
     this.render();
   }
 
-  set categories(categories) {
-    this._categories = categories;
-    this.render();
+  set onSearchSubmit(onSearchSubmit = async () => {}) {
+    this._onSearchSubmit = onSearchSubmit;
   }
 
   render() {
     this.innerHTML = `
-    <div class="accordion" id="filterAccordion">
-      <div class="accordion-item">
-        <h2 class="accordion-header">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#filterOne" aria-controls="filterOne">
-            <span>by Title or Name</span>
-          </button>
-        </h2>
-        <div id="filterOne" class="accordion-collapse collapse show" data-bs-parent="#filterAccordion">
-          <div class="accordion-body">
+      <div class="card">
+        <div class="card-header">
+          Find by title or name
+        </div>
+        <div class="card-body">
+          <form action="#" id="searchForm">
             <div class="form-floating mb-3">
               <input type="text" class="form-control" id="keywordInput" placeholder="title or name">
               <label for="keywordInput">Search movies</label>
             </div>
-          </div>
-        </div>
-      </div>
-      <div class="accordion-item">
-        <h2 class="accordion-header">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#filterTwo" aria-controls="filterTwo">
-            <span>by Categories</span>
-          </button>
-        </h2>
-        <div id="filterTwo" class="accordion-collapse collapse" data-bs-parent="#filterAccordion">
-          <div class="accordion-body">
-            <div class="d-flex flex-wrap gap-2">
-              <a href="#" class="border px-2 py-1 rounded text-decoration-none text-bg-primary">Action</a>
-              <a href="#" class="border px-2 py-1 rounded text-decoration-none">Drama</a>
-              <a href="#" class="border px-2 py-1 rounded text-decoration-none">Comedy</a>
-              <a href="#" class="border px-2 py-1 rounded text-decoration-none">Horror</a>
-              <a href="#" class="border px-2 py-1 rounded text-decoration-none">Thriller</a>
-              <a href="#" class="border px-2 py-1 rounded text-decoration-none">Sci-Fi</a>
-              <a href="#" class="border px-2 py-1 rounded text-decoration-none">Documentary</a>
-              <a href="#" class="border px-2 py-1 rounded text-decoration-none">Romance</a>
-              <a href="#" class="border px-2 py-1 rounded text-decoration-none">Crime</a>
+            <div class="d-grid mt-2">
+              <button class="btn btn-primary" type="submit" id="searchSubmitButton">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                </svg>
+                Search
+              </button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
-    </div>
-    <div class="d-grid mt-2">
-      <button class="btn btn-primary">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-        </svg>
-        Search
-      </button>
-    </div>
     `;
+
+    const searchForm = this.querySelector('#searchForm');
+    const submitButton = this.querySelector('#searchSubmitButton');
+    const keywordInput = this.querySelector('#keywordInput');
+    searchForm.onsubmit = async (e) => {
+      e.preventDefault();
+      const keyword = keywordInput.value.trim().toLowerCase();
+      const { startLoading, stopLoading } = loader(submitButton);
+      if (this._onSearchSubmit) {
+        startLoading();
+        await this._onSearchSubmit(keyword);
+        stopLoading();
+      }
+    };
   }
 }
 

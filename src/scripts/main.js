@@ -1,6 +1,5 @@
 import $ from 'jquery';
 import DataStore from './data/data-store';
-import { trimPath, fader, formatDate } from './helpers/helper';
 import './components/Navbar/app-navbar';
 import './components/Navbar/app-navbar-item';
 import './components/Carousel/app-carousel';
@@ -13,6 +12,23 @@ import './components/Card/grid-container';
 import './components/Form/load-more-button';
 import './components/Form/movie-filter';
 import './components/Modal/movie-detail-modal';
+import {
+  trimPath,
+  fader,
+  formatDate,
+} from './helpers/helper';
+
+let searchMoviesContainer = [];
+
+const pushSearchMovies = (movies = []) => {
+  searchMoviesContainer = [...searchMoviesContainer, ...movies];
+  return searchMoviesContainer;
+};
+
+const resetSearchMovies = () => {
+  searchMoviesContainer = [];
+  return searchMoviesContainer;
+};
 
 const getTrendingMovies = async (type) => {
   if (type === 'now-playing') {
@@ -57,6 +73,8 @@ const main = async () => {
   const carousel = document.querySelector('app-carousel');
   const swiperContainer = document.querySelector('swiper-container');
   const gridContainer = document.querySelector('grid-container');
+  const movieFilter = document.querySelector('movie-filter');
+  const searchLoadMoreButton = document.querySelector('load-more-button#searchLoadMoreButton');
 
   carousel.slides = slides;
   swiperContainer.breakPoints = {
@@ -81,14 +99,40 @@ const main = async () => {
   swiperContainer.movies = nowPlaying.map((movie) => ({
     title: movie.title,
     description: formatDate(movie.release_date),
-    image: `${baseImageUrl}/${posterImageSize}/${trimPath(movie.poster_path)}`,
+    image: movie.poster_path ? `${baseImageUrl}/${posterImageSize}/${trimPath(movie.poster_path)}` : '/assets/img/noimage.png',
   }));
 
   gridContainer.movies = tmdbTrending.map((movie) => ({
     title: movie.title,
     description: formatDate(movie.release_date),
-    image: `${baseImageUrl}/${posterImageSize}/${trimPath(movie.poster_path)}`,
+    image: movie.poster_path ? `${baseImageUrl}/${posterImageSize}/${trimPath(movie.poster_path)}` : '/assets/img/noimage.png',
   }));
+
+  movieFilter.onSearchSubmit = async (keyword) => {
+    resetSearchMovies();
+    const { fadeIn, fadeOut } = fader(gridContainer);
+
+    // get search data
+    fadeOut();
+    const results = await DataStore.getSearchMovies(keyword, 1);
+    const movies = pushSearchMovies(results);
+    gridContainer.movies = movies.map((movie) => ({
+      title: movie.title,
+      description: formatDate(movie.release_date),
+      image: movie.poster_path ? `${baseImageUrl}/${posterImageSize}/${trimPath(movie.poster_path)}` : '/assets/img/noimage.png',
+    }));
+    fadeIn();
+
+    // set search result keyword
+    $('#searchResult').text(keyword ? `"${keyword}"` : 'no keyword');
+
+    // add or remove load more button
+    if (movies.length) {
+      $('#searchLoadMoreButton').removeAttr('hidden');
+    } else {
+      $('#searchLoadMoreButton').attr('hidden', true);
+    }
+  };
 
   // trending tab
   $('#trendingSection app-tab-item').on('click', async function (e) {
@@ -97,18 +141,17 @@ const main = async () => {
     // set active tab
     $('#trendingSection app-tab-item').removeAttr('active');
     $(this).attr('active', true);
+
+    // get data trending
     const { fadeIn, fadeOut } = fader($('#trendingSection swiper-container'));
     const trendingType = $(this).data('type');
 
-    // get data trending
     fadeOut();
     const movies = await getTrendingMovies(trendingType);
-
-    // set to container
     swiperContainer.movies = movies.map((movie) => ({
       title: movie.title,
       description: formatDate(movie.release_date),
-      image: `${baseImageUrl}/${posterImageSize}/${trimPath(movie.poster_path)}`,
+      image: movie.poster_path ? `${baseImageUrl}/${posterImageSize}/${trimPath(movie.poster_path)}` : '/assets/img/noimage.png',
     }));
     fadeIn();
   });
