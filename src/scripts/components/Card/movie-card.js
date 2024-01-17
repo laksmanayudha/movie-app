@@ -5,8 +5,15 @@ class MovieCard extends HTMLElement {
   }
 
   render() {
-    const { image, title, description } = this._movie;
+    const {
+      id,
+      image,
+      title,
+      description,
+    } = this._movie;
     this.style.width = '100%';
+    this.style.cursor = 'pointer';
+    this.dataset.movieId = id;
     this.innerHTML = `
       <div class="card movie-item">
         <img src="${image}" class="card-img img-fit" alt="movie image">

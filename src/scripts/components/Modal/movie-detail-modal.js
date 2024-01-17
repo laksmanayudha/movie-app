@@ -2,10 +2,23 @@ import './movie-detail-review';
 import '../Card/swiper-container';
 import '../Card/movie-card';
 import '../Form/load-more-button';
+import '../Tab/app-tab';
+import '../Tab/app-tab-item';
+import * as bootstrap from 'bootstrap';
 
 class MovieDetailModal extends HTMLElement {
-  connectedCallback() {
+  constructor() {
+    super();
+    this._detail = {};
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    this[name] = newValue;
     this.render();
+  }
+
+  static get observedAttributes() {
+    return ['toggle', 'detail'];
   }
 
   set detail(detail) {
@@ -55,25 +68,26 @@ class MovieDetailModal extends HTMLElement {
     const review = document.createElement('movie-detail-review');
     review.review = {};
 
+    const { title } = this._detail;
     this.innerHTML = `
-      <div class="modal fade" tabindex="-1" id="movieDetailModal">
+      <div class="modal fade" tabindex="-1">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">The Brothers Sun (2024)</h5>
+              <h5 class="modal-title">${title} (2024)</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
               <div class="container-fluid">
                 <div class="row">
-                  <div class="col-md-5">
+                  <div class="col-lg-5">
                     <div class="d-flex justify-content-center">
                       <div class="movie-item">
-                        <img src="https://dummyimage.com/600x400/947894/fff" class="card-img img-fit" alt="movie list">
+                        <img src="https://dummyimage.com/600x400/947894/fff" class="card-img img-fit rounded" alt="movie list">
                       </div>
                     </div>
                   </div>
-                  <div class="col-md-7">
+                  <div class="col-lg-7">
                     <dl>
                       <dt>Overview</dt>
                       <dd>When a mysterious enemy targets his family, a Taipei triad member heads to Los Angeles to protect his strong-willed mother and oblivious younger brother.</dd>
@@ -112,6 +126,12 @@ class MovieDetailModal extends HTMLElement {
         </div>
       </div>
     `;
+
+    // show modal
+    if (this.toggle === 'show') {
+      const modal = new bootstrap.Modal(this.querySelector('.modal'));
+      modal.show();
+    }
 
     // this.querySelector('#tabContainer').appendChild(swiper);
     this.querySelector('#tabContainer').appendChild(review);

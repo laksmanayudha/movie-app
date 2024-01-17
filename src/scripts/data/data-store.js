@@ -154,6 +154,17 @@ class DataStore {
       return [];
     }
   }
+
+  static async getMovieDetail(id = null) {
+    try {
+      const baseUrl = process.env.TMDB_BASE_URL;
+      const response = await DataStore.fetchData(`${baseUrl}/movie/${id}`);
+      if (!response) throw new Error('Fail to get movie detail');
+      return response;
+    } catch (error) {
+      return {};
+    }
+  }
 }
 
 export default DataStore;

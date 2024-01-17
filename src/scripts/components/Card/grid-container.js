@@ -23,7 +23,7 @@ class GridContainer extends HTMLElement {
       const card = document.createElement('movie-card');
       card.movie = movie;
       return `
-        <div class="col-sm-6 col-lg-3 mt-4 d-flex justify-content-center" data-bs-toggle="modal" data-bs-target="#movieDetailModal">
+        <div class="col-sm-6 col-lg-3 mt-4 d-flex justify-content-center">
           ${card.outerHTML}
         </div>
       `;

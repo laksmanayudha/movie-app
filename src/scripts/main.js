@@ -18,16 +18,17 @@ import {
   formatDate,
 } from './helpers/helper';
 
-let searchMoviesContainer = [];
+let movieDetail = {};
+const search = { keyword: '', page: 1, results: [] };
 
 const pushSearchMovies = (movies = []) => {
-  searchMoviesContainer = [...searchMoviesContainer, ...movies];
-  return searchMoviesContainer;
+  search.results = [...search.results, ...movies];
+  return search.results;
 };
 
 const resetSearchMovies = () => {
-  searchMoviesContainer = [];
-  return searchMoviesContainer;
+  search.results = [];
+  return search.results;
 };
 
 const getTrendingMovies = async (type) => {
@@ -75,8 +76,12 @@ const main = async () => {
   const gridContainer = document.querySelector('grid-container');
   const movieFilter = document.querySelector('movie-filter');
   const searchLoadMoreButton = document.querySelector('load-more-button#searchLoadMoreButton');
+  const movieDetailModal = document.querySelector('movie-detail-modal');
 
+  // carousel
   carousel.slides = slides;
+
+  // trending swiper breakpoints
   swiperContainer.breakPoints = {
     576: {
       slidesPerView: 2,
@@ -96,20 +101,26 @@ const main = async () => {
     },
   };
 
+  // trending swiper movies
   swiperContainer.movies = nowPlaying.map((movie) => ({
+    id: movie.id,
     title: movie.title,
     description: formatDate(movie.release_date),
     image: movie.poster_path ? `${baseImageUrl}/${posterImageSize}/${trimPath(movie.poster_path)}` : '/assets/img/noimage.png',
   }));
 
+  // initial grid search movies
   gridContainer.movies = tmdbTrending.map((movie) => ({
+    id: movie.id,
     title: movie.title,
     description: formatDate(movie.release_date),
     image: movie.poster_path ? `${baseImageUrl}/${posterImageSize}/${trimPath(movie.poster_path)}` : '/assets/img/noimage.png',
   }));
 
+  // movie filter
   movieFilter.onSearchSubmit = async (keyword) => {
     resetSearchMovies();
+    search.keyword = keyword;
     const { fadeIn, fadeOut } = fader(gridContainer);
 
     // get search data
@@ -117,6 +128,7 @@ const main = async () => {
     const results = await DataStore.getSearchMovies(keyword, 1);
     const movies = pushSearchMovies(results);
     gridContainer.movies = movies.map((movie) => ({
+      id: movie.id,
       title: movie.title,
       description: formatDate(movie.release_date),
       image: movie.poster_path ? `${baseImageUrl}/${posterImageSize}/${trimPath(movie.poster_path)}` : '/assets/img/noimage.png',
@@ -134,6 +146,25 @@ const main = async () => {
     }
   };
 
+  // movie filter load more
+  searchLoadMoreButton.onclick = async () => {
+    const { fadeIn, fadeOut } = fader(searchLoadMoreButton);
+
+    fadeOut();
+    const results = await DataStore.getSearchMovies(search.keyword, search.page + 1);
+    if (results.length) {
+      search.page += 1;
+      const movies = pushSearchMovies(results);
+      gridContainer.movies = movies.map((movie) => ({
+        id: movie.id,
+        title: movie.title,
+        description: formatDate(movie.release_date),
+        image: movie.poster_path ? `${baseImageUrl}/${posterImageSize}/${trimPath(movie.poster_path)}` : '/assets/img/noimage.png',
+      }));
+    }
+    fadeIn();
+  };
+
   // trending tab
   $('#trendingSection app-tab-item').on('click', async function (e) {
     e.preventDefault();
@@ -149,11 +180,27 @@ const main = async () => {
     fadeOut();
     const movies = await getTrendingMovies(trendingType);
     swiperContainer.movies = movies.map((movie) => ({
+      id: movie.id,
       title: movie.title,
       description: formatDate(movie.release_date),
       image: movie.poster_path ? `${baseImageUrl}/${posterImageSize}/${trimPath(movie.poster_path)}` : '/assets/img/noimage.png',
     }));
     fadeIn();
+  });
+
+  // movie card
+  $('movie-card').on('click', async function (e) {
+    const movieId = $(this).data('movieId');
+    const { fadeIn, fadeOut } = fader($(this));
+
+    fadeOut();
+    movieDetail = await DataStore.getMovieDetail(movieId);
+    fadeIn();
+
+    movieDetailModal.detail = {
+      title: movieDetail.original_title,
+    };
+    movieDetailModal.setAttribute('toggle', 'show');
   });
 };
 
