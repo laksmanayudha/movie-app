@@ -1,8 +1,7 @@
-import $ from 'jquery';
 import Swiper from 'swiper/bundle';
 import 'swiper/css/bundle';
 import './swiper-slide';
-import './movie-card';
+import './app-card';
 
 class SwiperCardContainer extends HTMLElement {
   constructor() {
@@ -10,8 +9,8 @@ class SwiperCardContainer extends HTMLElement {
     this.withNavigation = this.hasAttribute('withNavigation');
   }
 
-  set movies(movies) {
-    this._movies = movies;
+  set cards(cards) {
+    this._cards = cards;
     this.render();
   }
 
@@ -20,21 +19,10 @@ class SwiperCardContainer extends HTMLElement {
   }
 
   render() {
-    // generate content
-    const content = this._movies.map((movie) => {
-      const swiperSlide = document.createElement('swiper-slide');
-      const movieCard = document.createElement('movie-card');
-      movieCard.movie = movie;
-      swiperSlide.appendChild(movieCard);
-      return swiperSlide.outerHTML;
-    }).join('');
-
-    // ganti content
+    const cards = this._cards || [];
     this.innerHTML = `
       <div class="swiper">
-        <div class="swiper-wrapper">
-          ${content}
-        </div>
+        <div class="swiper-wrapper"></div>
         ${this.withNavigation
           ? `
             <div class="swiper-button-next"></div>
@@ -43,6 +31,16 @@ class SwiperCardContainer extends HTMLElement {
         }
       </div>
     `;
+
+    // insert cards
+    const swiperWrapper = this.querySelector('.swiper-wrapper');
+    cards.forEach((card) => {
+      const swiperSlide = document.createElement('swiper-slide');
+      const cardElement = document.createElement('app-card');
+      cardElement.card = card;
+      swiperSlide.appendChild(cardElement);
+      swiperWrapper.appendChild(swiperSlide);
+    });
 
     // trigger swiper
     const swiperContainer = this.querySelector('.swiper');

@@ -1,7 +1,6 @@
 class AppCarouselItem extends HTMLElement {
   constructor() {
     super();
-    this.childrenHTML = this.innerHTML;
     this.alignType = {
       left: 'text-start',
       center: 'text-center',

@@ -1,7 +1,6 @@
 class AppFooterItem extends HTMLElement {
   constructor() {
     super();
-    this.childrenHTML = this.innerHTML;
     this.target = this.getAttribute('target') || '#';
     this.title = this.getAttribute('title') || null;
   }

@@ -18,10 +18,12 @@ const loader = (element, message = 'Loading...') => {
     },
   };
 };
+const roundRating = (value) => Math.round(value);
 
 export {
   trimPath,
   fader,
   formatDate,
   loader,
+  roundRating,
 };

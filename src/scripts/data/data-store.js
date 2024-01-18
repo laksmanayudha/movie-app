@@ -73,17 +73,6 @@ class DataStore {
     }
   }
 
-  static async getGenres() {
-    try {
-      const baseUrl = process.env.TMDB_BASE_URL;
-      const response = await DataStore.fetchData(`${baseUrl}/genre/movie/list`);
-      if (!response) throw new Error('Fail to get genres data');
-      return response.genres;
-    } catch (error) {
-      return [];
-    }
-  }
-
   static async getNowPlaying(page = 1) {
     try {
       const baseUrl = process.env.TMDB_BASE_URL;
@@ -155,10 +144,11 @@ class DataStore {
     }
   }
 
-  static async getMovieDetail(id = null) {
+  static async getMovieDetail(id = null, additionalData = []) {
     try {
       const baseUrl = process.env.TMDB_BASE_URL;
-      const response = await DataStore.fetchData(`${baseUrl}/movie/${id}`);
+      const appendToResponse = additionalData.join(',');
+      const response = await DataStore.fetchData(`${baseUrl}/movie/${id}?append_to_response=${appendToResponse}`);
       if (!response) throw new Error('Fail to get movie detail');
       return response;
     } catch (error) {

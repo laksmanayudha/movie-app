@@ -1,6 +1,6 @@
-class MovieCard extends HTMLElement {
-  set movie(movie) {
-    this._movie = movie;
+class AppCard extends HTMLElement {
+  set card(card) {
+    this._card = card;
     this.render();
   }
 
@@ -10,22 +10,27 @@ class MovieCard extends HTMLElement {
       image,
       title,
       description,
-    } = this._movie;
+      onclick = async () => {},
+    } = this._card;
     this.style.width = '100%';
     this.style.cursor = 'pointer';
-    this.dataset.movieId = id;
+    this.dataset.id = id;
     this.innerHTML = `
-      <div class="card movie-item">
+      <div class="card card-item">
         <img src="${image}" class="card-img img-fit" alt="movie image">
         <div class="card-img-overlay backdrop text-white">
           <div class="h-100 d-flex flex-column justify-content-end">
             <h5 class="card-title text-ellipsis">${title}</h5>
-            <p class="card-text">${description}</p>
+            <p class="card-text fw-light">${description}</p>
           </div>
         </div>
       </div>
     `;
+
+    this.onclick = async () => {
+      await onclick(this);
+    };
   }
 }
 
-customElements.define('movie-card', MovieCard);
+customElements.define('app-card', AppCard);

@@ -1,41 +1,38 @@
-import './movie-card';
+import './app-card';
 
 class GridContainer extends HTMLElement {
-  set movies(movies) {
-    this._movies = movies;
+  set cards(cards) {
+    this._cards = cards;
     this.render();
   }
 
   render() {
-    // ganti content
-    const movies = this._movies || [];
+    const cards = this._cards || [];
 
-    if (!movies.length) {
-      this.innerHTML = `
+    this.innerHTML = `
       <div class="container-fluid">
-        <div class="p-2 text-muted">No data available</div>
+        <div class="row grid-wrapper"></div>
       </div>
-      `;
+    `;
+
+    const gridWrapper = this.querySelector('.grid-wrapper');
+    if (!cards.length) {
+      gridWrapper.innerHTML = '<div class="p-2 text-muted">No data available</div>';
       return;
     }
 
-    const movieCards = movies.map((movie) => {
-      const card = document.createElement('movie-card');
-      card.movie = movie;
-      return `
-        <div class="col-sm-6 col-lg-3 mt-4 d-flex justify-content-center">
-          ${card.outerHTML}
-        </div>
-      `;
-    }).join('');
-
-    this.innerHTML = `
-    <div class="container-fluid">
-      <div class="row">
-        ${movieCards}
-      </div>
-    </div>
-    `;
+    cards.forEach((card) => {
+      const gridColumn = document.createElement('div');
+      gridColumn.classList.add('col-sm-6');
+      gridColumn.classList.add('col-lg-3');
+      gridColumn.classList.add('mt-4');
+      gridColumn.classList.add('d-flex');
+      gridColumn.classList.add('justify-content-center');
+      const cardElement = document.createElement('app-card');
+      cardElement.card = card;
+      gridColumn.appendChild(cardElement);
+      gridWrapper.appendChild(gridColumn);
+    });
   }
 }
 

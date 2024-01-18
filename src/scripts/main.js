@@ -16,6 +16,7 @@ import {
   trimPath,
   fader,
   formatDate,
+  roundRating,
 } from './helpers/helper';
 
 let movieDetail = {};
@@ -59,12 +60,10 @@ const main = async () => {
   const slides = DataStore.getCarouselData();
   const [
     configuration,
-    genres,
     nowPlaying,
     tmdbTrending,
   ] = await DataStore.pool([
     DataStore.getConfiguration(),
-    DataStore.getGenres(),
     DataStore.getNowPlaying(1),
     DataStore.getTMDBTrending(),
   ]);
@@ -77,6 +76,39 @@ const main = async () => {
   const movieFilter = document.querySelector('movie-filter');
   const searchLoadMoreButton = document.querySelector('load-more-button#searchLoadMoreButton');
   const movieDetailModal = document.querySelector('movie-detail-modal');
+
+  const showMovieDetail = async (card) => {
+    const movieId = card.dataset.id;
+    const { fadeIn, fadeOut } = fader(card);
+
+    fadeOut();
+    movieDetail = await DataStore.getMovieDetail(movieId, ['reviews', 'casts', 'recommendations']);
+    fadeIn();
+
+    const casts = movieDetail.casts.cast.map((cast) => ({
+      name: cast.name,
+      image: cast.profile_path ? `${baseImageUrl}/${posterImageSize}/${trimPath(cast.profile_path)}` : '/assets/img/noimage.png',
+      character: cast.character,
+    }));
+    const reviews = movieDetail.reviews.results.map((review) => ({
+      author: review.author,
+      avatarPath: review.author_details.avatar_path ? `${baseImageUrl}/${posterImageSize}/${trimPath(review.author_details.avatar_path)}` : '/assets/img/noimage.png',
+      rating: roundRating(review.author_details.rating),
+      content: review.content,
+      updatedAt: formatDate(review.updated_at),
+    }));
+    movieDetailModal.detail = {
+      title: movieDetail.original_title,
+      image: movieDetail.poster_path ? `${baseImageUrl}/${posterImageSize}/${trimPath(movieDetail.poster_path)}` : '/assets/img/noimage.png',
+      overview: movieDetail.overview,
+      releaseDate: formatDate(movieDetail.release_date),
+      genres: movieDetail.genres,
+      rating: roundRating(movieDetail.vote_average),
+      casts,
+      reviews,
+    };
+    movieDetailModal.setAttribute('toggle', 'show');
+  };
 
   // carousel
   carousel.slides = slides;
@@ -102,19 +134,21 @@ const main = async () => {
   };
 
   // trending swiper movies
-  swiperContainer.movies = nowPlaying.map((movie) => ({
+  swiperContainer.cards = nowPlaying.map((movie) => ({
     id: movie.id,
     title: movie.title,
     description: formatDate(movie.release_date),
     image: movie.poster_path ? `${baseImageUrl}/${posterImageSize}/${trimPath(movie.poster_path)}` : '/assets/img/noimage.png',
+    onclick: showMovieDetail,
   }));
 
   // initial grid search movies
-  gridContainer.movies = tmdbTrending.map((movie) => ({
+  gridContainer.cards = tmdbTrending.map((movie) => ({
     id: movie.id,
     title: movie.title,
     description: formatDate(movie.release_date),
     image: movie.poster_path ? `${baseImageUrl}/${posterImageSize}/${trimPath(movie.poster_path)}` : '/assets/img/noimage.png',
+    onclick: showMovieDetail,
   }));
 
   // movie filter
@@ -127,11 +161,12 @@ const main = async () => {
     fadeOut();
     const results = await DataStore.getSearchMovies(keyword, 1);
     const movies = pushSearchMovies(results);
-    gridContainer.movies = movies.map((movie) => ({
+    gridContainer.cards = movies.map((movie) => ({
       id: movie.id,
       title: movie.title,
       description: formatDate(movie.release_date),
       image: movie.poster_path ? `${baseImageUrl}/${posterImageSize}/${trimPath(movie.poster_path)}` : '/assets/img/noimage.png',
+      onclick: showMovieDetail,
     }));
     fadeIn();
 
@@ -155,11 +190,12 @@ const main = async () => {
     if (results.length) {
       search.page += 1;
       const movies = pushSearchMovies(results);
-      gridContainer.movies = movies.map((movie) => ({
+      gridContainer.cards = movies.map((movie) => ({
         id: movie.id,
         title: movie.title,
         description: formatDate(movie.release_date),
         image: movie.poster_path ? `${baseImageUrl}/${posterImageSize}/${trimPath(movie.poster_path)}` : '/assets/img/noimage.png',
+        onclick: showMovieDetail,
       }));
     }
     fadeIn();
@@ -179,28 +215,14 @@ const main = async () => {
 
     fadeOut();
     const movies = await getTrendingMovies(trendingType);
-    swiperContainer.movies = movies.map((movie) => ({
+    swiperContainer.cards = movies.map((movie) => ({
       id: movie.id,
       title: movie.title,
       description: formatDate(movie.release_date),
       image: movie.poster_path ? `${baseImageUrl}/${posterImageSize}/${trimPath(movie.poster_path)}` : '/assets/img/noimage.png',
+      onclick: showMovieDetail,
     }));
     fadeIn();
-  });
-
-  // movie card
-  $('movie-card').on('click', async function (e) {
-    const movieId = $(this).data('movieId');
-    const { fadeIn, fadeOut } = fader($(this));
-
-    fadeOut();
-    movieDetail = await DataStore.getMovieDetail(movieId);
-    fadeIn();
-
-    movieDetailModal.detail = {
-      title: movieDetail.original_title,
-    };
-    movieDetailModal.setAttribute('toggle', 'show');
   });
 };
 

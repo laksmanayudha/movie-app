@@ -21,7 +21,7 @@ class AppTabItem extends HTMLElement {
   render() {
     this.innerHTML = `
       <li class="nav-item">
-        <a class="nav-link ${this._active ? 'active' : ''}" href="#">${this._title}</a>
+        <span class="nav-link ${this._active ? 'active' : ''}" style="cursor: pointer;">${this._title}</span>
       </li>
     `;
   }
