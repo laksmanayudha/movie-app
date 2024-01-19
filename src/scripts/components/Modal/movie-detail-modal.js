@@ -36,24 +36,28 @@ class MovieDetailModal extends HTMLElement {
 
     // set tab content
     if (this._tab === 'casts') {
-      const swiperContainer = document.createElement('swiper-container');
-      swiperContainer.breakPoints = {
-        576: {
-          slidesPerView: 2,
-          spaceBetween: 10,
-        },
-        992: {
-          slidesPerView: 4,
-          spaceBetween: 20,
-        },
-      };
+      if (!casts.length) {
+        tabPanel.innerHTML = 'No casts available';
+      } else {
+        const swiperContainer = document.createElement('swiper-container');
+        swiperContainer.breakPoints = {
+          576: {
+            slidesPerView: 2,
+            spaceBetween: 10,
+          },
+          992: {
+            slidesPerView: 4,
+            spaceBetween: 20,
+          },
+        };
 
-      swiperContainer.cards = casts.map((cast) => ({
-        title: cast.name,
-        image: cast.image,
-        description: cast.character,
-      }));
-      tabPanel.appendChild(swiperContainer);
+        swiperContainer.cards = casts.map((cast) => ({
+          title: cast.name,
+          image: cast.image,
+          description: cast.character,
+        }));
+        tabPanel.appendChild(swiperContainer);
+      }
     }
 
     if (this._tab === 'reviews') {
