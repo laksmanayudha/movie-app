@@ -7,10 +7,10 @@ const fader = (element) => ({
   fadeOut: () => $(element).fadeOut('slow'),
 });
 const formatDate = (date, format = 'd MMM YYYY') => moment(date).format(format);
-const loader = (element, message = 'Loading...') => {
+const loader = (element) => {
   const defaultContent = $(element).html();
   return {
-    startLoading: () => {
+    startLoading: (message = 'Loading...') => {
       $(element).html(message).prop('disabled', true);
     },
     stopLoading: () => {

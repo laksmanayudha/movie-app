@@ -17,6 +17,7 @@ import {
   fader,
   formatDate,
   roundRating,
+  loader,
 } from './helpers/helper';
 
 let movieDetail = {};
@@ -56,8 +57,10 @@ const getTrendingMovies = async (type) => {
   return [];
 };
 
-const main = async () => {
-  const slides = DataStore.getCarouselData();
+const getInitData = async () => {
+  const { startLoading, stopLoading } = loader($('main'));
+
+  startLoading('<div class="mt-4">Please wait app is loading...</div>');
   const [
     configuration,
     nowPlaying,
@@ -67,7 +70,19 @@ const main = async () => {
     DataStore.getNowPlaying(1),
     DataStore.getTMDBTrending(),
   ]);
+  stopLoading();
 
+  return {
+    configuration,
+    nowPlaying,
+    tmdbTrending,
+  };
+};
+
+const main = async () => {
+  const { configuration, nowPlaying, tmdbTrending } = await getInitData();
+
+  const slides = DataStore.getCarouselData();
   const baseImageUrl = trimPath(configuration.images.secure_base_url);
   const posterImageSize = configuration.images.poster_sizes[4] || 'w500';
   const carousel = document.querySelector('app-carousel');
@@ -77,6 +92,7 @@ const main = async () => {
   const searchLoadMoreButton = document.querySelector('load-more-button#searchLoadMoreButton');
   const movieDetailModal = document.querySelector('movie-detail-modal');
 
+  // show movie detail on card click
   const showMovieDetail = async (card) => {
     const movieId = card.dataset.id;
     const { fadeIn, fadeOut } = fader(card);
@@ -87,19 +103,19 @@ const main = async () => {
 
     const casts = movieDetail.casts.cast.map((cast) => ({
       name: cast.name,
-      image: cast.profile_path ? `${baseImageUrl}/${posterImageSize}/${trimPath(cast.profile_path)}` : '/assets/img/noimage.png',
+      image: cast.profile_path ? `${baseImageUrl}/${posterImageSize}/${trimPath(cast.profile_path)}` : './assets/img/noimage.png',
       character: cast.character,
     }));
     const reviews = movieDetail.reviews.results.map((review) => ({
       author: review.author,
-      avatarPath: review.author_details.avatar_path ? `${baseImageUrl}/${posterImageSize}/${trimPath(review.author_details.avatar_path)}` : '/assets/img/noimage.png',
+      avatarPath: review.author_details.avatar_path ? `${baseImageUrl}/${posterImageSize}/${trimPath(review.author_details.avatar_path)}` : './assets/img/noimage.png',
       rating: roundRating(review.author_details.rating),
       content: review.content,
       updatedAt: formatDate(review.updated_at),
     }));
     movieDetailModal.detail = {
       title: movieDetail.original_title,
-      image: movieDetail.poster_path ? `${baseImageUrl}/${posterImageSize}/${trimPath(movieDetail.poster_path)}` : '/assets/img/noimage.png',
+      image: movieDetail.poster_path ? `${baseImageUrl}/${posterImageSize}/${trimPath(movieDetail.poster_path)}` : './assets/img/noimage.png',
       overview: movieDetail.overview,
       releaseDate: formatDate(movieDetail.release_date),
       genres: movieDetail.genres,
@@ -138,7 +154,7 @@ const main = async () => {
     id: movie.id,
     title: movie.title,
     description: formatDate(movie.release_date),
-    image: movie.poster_path ? `${baseImageUrl}/${posterImageSize}/${trimPath(movie.poster_path)}` : '/assets/img/noimage.png',
+    image: movie.poster_path ? `${baseImageUrl}/${posterImageSize}/${trimPath(movie.poster_path)}` : './assets/img/noimage.png',
     onclick: showMovieDetail,
   }));
 
@@ -147,7 +163,7 @@ const main = async () => {
     id: movie.id,
     title: movie.title,
     description: formatDate(movie.release_date),
-    image: movie.poster_path ? `${baseImageUrl}/${posterImageSize}/${trimPath(movie.poster_path)}` : '/assets/img/noimage.png',
+    image: movie.poster_path ? `${baseImageUrl}/${posterImageSize}/${trimPath(movie.poster_path)}` : './assets/img/noimage.png',
     onclick: showMovieDetail,
   }));
 
@@ -165,7 +181,7 @@ const main = async () => {
       id: movie.id,
       title: movie.title,
       description: formatDate(movie.release_date),
-      image: movie.poster_path ? `${baseImageUrl}/${posterImageSize}/${trimPath(movie.poster_path)}` : '/assets/img/noimage.png',
+      image: movie.poster_path ? `${baseImageUrl}/${posterImageSize}/${trimPath(movie.poster_path)}` : './assets/img/noimage.png',
       onclick: showMovieDetail,
     }));
     fadeIn();
@@ -194,7 +210,7 @@ const main = async () => {
         id: movie.id,
         title: movie.title,
         description: formatDate(movie.release_date),
-        image: movie.poster_path ? `${baseImageUrl}/${posterImageSize}/${trimPath(movie.poster_path)}` : '/assets/img/noimage.png',
+        image: movie.poster_path ? `${baseImageUrl}/${posterImageSize}/${trimPath(movie.poster_path)}` : './assets/img/noimage.png',
         onclick: showMovieDetail,
       }));
     }
@@ -219,7 +235,7 @@ const main = async () => {
       id: movie.id,
       title: movie.title,
       description: formatDate(movie.release_date),
-      image: movie.poster_path ? `${baseImageUrl}/${posterImageSize}/${trimPath(movie.poster_path)}` : '/assets/img/noimage.png',
+      image: movie.poster_path ? `${baseImageUrl}/${posterImageSize}/${trimPath(movie.poster_path)}` : './assets/img/noimage.png',
       onclick: showMovieDetail,
     }));
     fadeIn();

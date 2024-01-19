@@ -3,24 +3,24 @@ class DataStore {
     return [
       {
         active: true,
-        image: '/assets/img/carousel_one.jpg',
+        image: './assets/img/carousel_one.jpg',
         align: 'left',
         label: 'Welcome Movie Enthusiast!',
         description: 'Millions of films and reviews that you can search for are available here.',
       },
       {
         active: false,
-        image: '/assets/img/carousel_three.jpg',
+        image: './assets/img/carousel_three.jpg',
         align: 'center',
         label: 'Millions of Movies with Various Genres',
         description: 'You can find various genres of films here ranging from Action, Drama, Horror, etc.',
       },
       {
         active: false,
-        image: '/assets/img/carousel_two.jpg',
+        image: './assets/img/carousel_two.jpg',
         align: 'right',
         label: 'Discover and Explore Movies on Our Search',
-        description: 'Use the movie name or select the available genre to search for the movie you want.',
+        description: 'Searching by text takes into account all original, translated, alternative names and titles.',
       },
     ];
   }
