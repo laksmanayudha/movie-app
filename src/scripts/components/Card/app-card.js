@@ -8,10 +8,10 @@ class AppCard extends HTMLElement {
 
   render() {
     const {
-      id,
-      image,
-      title,
-      description,
+      id = '',
+      image = '',
+      title = '',
+      description = '',
       onclick = async () => {},
     } = this._card;
     this.style.width = '100%';
@@ -26,13 +26,13 @@ class AppCard extends HTMLElement {
               class="card-title text-ellipsis"
               data-bs-toggle="tooltip"
               data-bs-placement="top"
-              data-bs-title="${title}"
+              data-bs-title="${title || 'no title'}"
             >${title}</h5>
             <p
               class="card-text fw-light text-ellipsis"
               data-bs-toggle="tooltip"
               data-bs-placement="top"
-              data-bs-title="${description}"
+              data-bs-title="${description || 'no description'}"
             >${description}</p>
           </div>
         </div>
