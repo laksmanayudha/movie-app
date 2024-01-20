@@ -4,7 +4,7 @@ import '../Card/app-card';
 import '../Form/load-more-button';
 import '../Tab/app-tab';
 import '../Tab/app-tab-item';
-import * as bootstrap from 'bootstrap';
+import { Modal } from 'bootstrap';
 
 class MovieDetailModal extends HTMLElement {
   constructor() {
@@ -139,7 +139,7 @@ class MovieDetailModal extends HTMLElement {
     // show modal
     if (this.toggle === 'show') {
       this._tab = 'casts';
-      const modal = new bootstrap.Modal(this.querySelector('.modal'));
+      const modal = new Modal(this.querySelector('.modal'));
       modal.show();
     }
 
