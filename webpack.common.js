@@ -89,8 +89,6 @@ module.exports = {
       ],
     }),
     // ENV
-    new Dotenv({
-      path: path.resolve(__dirname, '.env'),
-    }),
+    new Dotenv(),
   ],
 };
